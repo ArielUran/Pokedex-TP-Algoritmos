@@ -4,13 +4,11 @@ Repositorio del grupo. Partir de este esqueleto. No borrar la estructura de `src
 
 ## Integrantes
 
-| Nombre | Mail | GitHub |
-| --- | --- | --- |
-|  |  |  |
-|  |  |  |
-|  |  |  |
+|     Nombre    |           Mail            |             GitHub              |
+| Ariel Uran    | arielurans21@gmail.com    | https://github.com/ArielUran    |
+| Natarin López | natashalopez797@gmail.com | https://github.com/NatarinLopez |
 
-**Tema elegido:** Pokédex / Recetario / Biblioteca musical (dejar uno)
+**Tema elegido:** Pokédex 
 
 ## Cómo ejecutar
 
