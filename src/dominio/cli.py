@@ -6,20 +6,26 @@ más adelante esto se va a ir reemplazando por los TADs propios
 (ListaEnlazada, Pila, Cola) que pide la consigna.
 """
 
-from pokedex import catalogo
+from src.dominio.pokedex import catalogo
+from src.dominio.evoluciones import (
+    construir_mapa_evoluciones,
+    imprimir_cadena_evoluciones,
+)
 
 
 # ---------------------------------------------------------------------
 # Funciones auxiliares (lógica). Están simples/incompletas a propósito:
 # muchas se van a ir completando en las próximas entregas.
+#
+# Desde E2, `catalogo` es una lista de objetos Pokemon (antes eran
+# dicts sueltos) -> se accede como pokemon.nombre, no pokemon["nombre"].
 # ---------------------------------------------------------------------
 
 def listar_catalogo():
     """1. Listar catálogo."""
     print("\n--- Catálogo de Pokémon ---")
-    for p in catalogo:
-        tipos = ", ".join(p["tipo"])
-        print(f'#{p["numero"]:>3}  {p["nombre"]:<12}  {tipos:<20}  {p["generacion"]}')
+    for pokemon in catalogo:
+        print(pokemon)  # usa el __str__ de la clase Pokemon
 
 
 def ver_detalle():
@@ -27,9 +33,9 @@ def ver_detalle():
     dato = input("Buscar por número o nombre: ").strip()
     encontrado = None
 
-    for p in catalogo:
-        if dato.lower() == p["nombre"].lower() or dato == str(p["numero"]):
-            encontrado = p
+    for pokemon in catalogo:
+        if dato.lower() == pokemon.nombre.lower() or dato == str(pokemon.numero):
+            encontrado = pokemon
             break
 
     if encontrado is None:
@@ -37,20 +43,20 @@ def ver_detalle():
         return
 
     print("\n--- Detalle ---")
-    print(f'Número:     {encontrado["numero"]}')
-    print(f'Nombre:     {encontrado["nombre"]}')
-    print(f'Tipo:       {", ".join(encontrado["tipo"])}')
-    print(f'Generación: {encontrado["generacion"]}')
+    print(f'Número:     {encontrado.numero}')
+    print(f'Nombre:     {encontrado.nombre}')
+    print(f'Tipo:       {", ".join(encontrado.tipo)}')
+    print(f'Generación: {encontrado.generacion}')
 
 
 def buscar():
     """3. Buscar (lineal por ahora; binaria cuando el catálogo esté ordenado)."""
     termino = input("Ingresá nombre, tipo o número a buscar: ").strip().lower()
     resultados = [
-        p for p in catalogo
-        if termino in p["nombre"].lower()
-        or any(termino == t.lower() for t in p["tipo"])
-        or termino == str(p["numero"])
+        pokemon for pokemon in catalogo
+        if termino in pokemon.nombre.lower()
+        or any(termino == t.lower() for t in pokemon.tipo)
+        or termino == str(pokemon.numero)
     ]
 
     if not resultados:
@@ -58,8 +64,8 @@ def buscar():
         return
 
     print(f"\nSe encontraron {len(resultados)} resultado(s):")
-    for p in resultados:
-        print(f'#{p["numero"]:>3}  {p["nombre"]:<12}  {", ".join(p["tipo"])}')
+    for pokemon in resultados:
+        print(pokemon)
 
 
 def ordenar():
@@ -79,9 +85,26 @@ def ordenar():
 
 def cadena_evoluciones():
     """5. Operación recursiva del dominio: cadena de evoluciones."""
-    # TODO: se necesita un dataset de evoluciones (quién evoluciona a quién)
-    # y una función recursiva de verdad, con caso base explícito.
-    print("(pendiente: recorrer la cadena de evoluciones de forma recursiva)")
+    dato = input("Número del Pokémon para ver su cadena de evolución: ").strip()
+
+    if not dato.isdigit():
+        print("Eso no es un número válido.")
+        return
+
+    numero = int(dato)
+    pokemon = None
+    for p in catalogo:
+        if p.numero == numero:
+            pokemon = p
+            break
+
+    if pokemon is None:
+        print(f"No se encontró ningún Pokémon con número {numero}.")
+        return
+
+    print(f"\n--- Cadena de evolución de {pokemon.nombre} ---")
+    mapa = construir_mapa_evoluciones()
+    imprimir_cadena_evoluciones(numero, catalogo, mapa)
 
 
 def gestionar_equipo():

@@ -10,8 +10,9 @@ Mínimos: 8 casos escritos en E2; ejecutados en E3; 15 de regresión en E6 (pila
 | --- | --- | --- | --- | --- | --- | --- |
 | P01 | E1 | Arrancar el programa y listar catálogo | dataset de la cátedra | lista no vacía, sin traceback |  |  |
 | P02 | E1 | Elegir un ítem inexistente | id = -1 | mensaje claro, el menú sigue |  |  |
-| P03 | E2 | Operación recursiva sobre un ítem con cadena | ver consigna §3.3 | imprime la cadena completa |  |  |
-| P04 | E2 | Operación recursiva sobre un ítem sin derivados |  | solo el ítem (caso base) |  |  |
+| P03 | E2 | Operación recursiva sobre un ítem con cadena | número = 4 (Charmander) | imprime Charmander -> Charmeleon -> Charizard |  |  |
+| P03b | E2 | Operación recursiva con ramificación | número = 133 (Eevee) | imprime Eevee y sus 3 evoluciones (Vaporeon, Jolteon, Flareon) |  |  |
+| P04 | E2 | Operación recursiva sobre un ítem sin derivados | número = 151 (Mew, no evoluciona) | solo imprime el ítem (caso base inmediato) |  |  |
 | P05 | E3 | Agregar a la colección principal hasta el tope | equipo de 6 / equivalente | el séptimo falla con excepción propia |  |  |
 | P06 | E3 | Desapilar historial vacío | pila vacía | excepción propia, menú sigue |  |  |
 | P07 | E3 | Desencolar cola vacía | cola vacía | excepción propia, menú sigue |  |  |

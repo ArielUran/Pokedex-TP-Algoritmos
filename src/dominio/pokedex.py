@@ -1,4 +1,4 @@
-catalogo = [
+_datos_iniciales = [
     {
         "numero": 1,
         "nombre": "Bulbasaur",
@@ -420,3 +420,11 @@ catalogo = [
         "generacion": "Segunda"
     }
 ]
+
+from src.dominio.pokemon import Pokemon
+
+# Catálogo como objetos de dominio (E2).
+# Antes 'catalogo' era una lista de dicts sueltos; ahora es una lista
+# de objetos Pokemon. El resto del CLI se actualiza para usar
+# pokemon.numero, pokemon.nombre, etc. en vez de p["numero"], p["nombre"].
+catalogo = [Pokemon.desde_dict(d) for d in _datos_iniciales]
