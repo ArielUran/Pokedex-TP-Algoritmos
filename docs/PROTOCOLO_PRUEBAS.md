@@ -8,8 +8,8 @@ Mínimos: 8 casos escritos en E2; ejecutados en E3; 15 de regresión en E6 (pila
 
 | ID | Entrega | Acción (pasos en el CLI) | Datos | Resultado esperado | Resultado | Notas |
 | --- | --- | --- | --- | --- | --- | --- |
-| P01 | E1 | Arrancar el programa y listar catálogo | dataset de la cátedra | lista no vacía, sin traceback |  |  |
-| P02 | E1 | Elegir un ítem inexistente | id = -1 | mensaje claro, el menú sigue |  |  |
+| P01 | E1 | Arrancar el programa y listar catálogo | opción 1 del menú | lista las 68 filas del catálogo, sin traceback |  |  |
+| P02 | E1 | Elegir un ítem inexistente | ver detalle, número = 9999 | mensaje "No se encontró ningún Pokémon con..." y el menú sigue |  |  |
 | P03 | E2 | Operación recursiva sobre un ítem con cadena | número = 4 (Charmander) | imprime Charmander -> Charmeleon -> Charizard |  |  |
 | P03b | E2 | Operación recursiva con ramificación | número = 133 (Eevee) | imprime Eevee y sus 3 evoluciones (Vaporeon, Jolteon, Flareon) |  |  |
 | P04 | E2 | Operación recursiva sobre un ítem sin derivados | número = 151 (Mew, no evoluciona) | solo imprime el ítem (caso base inmediato) |  |  |
