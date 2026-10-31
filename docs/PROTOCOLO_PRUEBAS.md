@@ -17,10 +17,10 @@ Mínimos: 8 casos escritos en E2; ejecutados en E3; 15 de regresión en E6 (pila
 | P06 | E3 | Desapilar historial vacío | pila vacía (opción 7 sin acciones previas) | PilaVaciaError, menú sigue | pasa |  |
 | P07 | E3 | Desencolar cola vacía | cola vacía (opción 8 sin encolar antes) | ColaVaciaError, menú sigue | pasa |  |
 | P08 | E3 | Listar colección con el iterador | equipo con 6 ítems agregados en orden | el orden coincide con las inserciones | pasa |  |
-| P09 | E4 | Búsqueda lineal de un nombre que existe |  | lo encuentra | no corrido |  |
-| P10 | E4 | Búsqueda lineal de un nombre que no existe |  | no encontrado, sin traceback | no corrido |  |
-| P11 | E4 | Búsqueda binaria con catálogo desordenado |  | avisa o reordena; no da un falso hit | no corrido |  |
-| P12 | E4 | Ordenar por un criterio y después por otro |  | el orden cambia | no corrido |  |
+| P09 | E4 | Búsqueda lineal de un nombre que existe | opción 3, lineal, nombre = Golem | lo encuentra y lo muestra | pasa |  |
+| P10 | E4 | Búsqueda lineal de un nombre que no existe | opción 3, lineal, nombre = Missingno | "No se encontró ningún Pokémon...", sin traceback, el menú sigue | pasa |  |
+| P11 | E4 | Búsqueda binaria con catálogo desordenado | catálogo ordenado por número; opción 3, binaria, nombre = Golem | avisa que reordena por nombre y lo encuentra (no da falso "no encontrado") | pasa |  |
+| P12 | E4 | Ordenar por un criterio y después por otro | opción 4: nombre con selección, luego número con inserción | el orden cambia correctamente en cada caso | pasa |  |
 | P13 | E5 | Guardar CSV, salir, volver a entrar |  | los datos siguen | no corrido |  |
 | P14 | E5 | Guardar binario y modificar un registro por id |  | al recargar, ese campo cambió | no corrido |  |
 | P15 | E5 | Abrir un binario truncado o con magia mala | archivo basura | excepción de archivo inválido | no corrido |  |

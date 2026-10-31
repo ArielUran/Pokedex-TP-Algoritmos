@@ -11,6 +11,8 @@ from src.dominio.evoluciones import (
     imprimir_cadena_evoluciones,
 )
 from src.dominio.equipo import Equipo
+from src.algoritmos.busqueda import busqueda_lineal, busqueda_binaria
+from src.algoritmos.ordenamiento import ordenar_seleccion, ordenar_insercion
 from src.tads.pila import Pila
 from src.tads.cola import Cola
 from src.excepciones import (
@@ -30,6 +32,16 @@ from src.excepciones import (
 equipo = Equipo()
 historial = Pila()
 turnos = Cola()
+
+# Criterio por el que está ordenado el catálogo ahora: 'numero', 'nombre' o None.
+# El catálogo arranca ordenado por número (así viene en el dataset).
+_orden_actual = "numero"
+
+# Cada criterio: cómo sacar la clave de un Pokémon (para ordenar/buscar).
+CLAVES = {
+    "numero": lambda p: p.numero,
+    "nombre": lambda p: p.nombre.lower(),
+}
 
 
 def _buscar_en_catalogo(numero):
@@ -71,36 +83,88 @@ def ver_detalle():
     print(f'Generación: {encontrado.generacion}')
 
 
-def buscar():
-    """3. Buscar (lineal por ahora; binaria cuando el catálogo esté ordenado)."""
-    termino = input("Ingresá nombre, tipo o número a buscar: ").strip().lower()
-    resultados = [
-        pokemon for pokemon in catalogo
-        if termino in pokemon.nombre.lower()
-        or any(termino == t.lower() for t in pokemon.tipo)
-        or termino == str(pokemon.numero)
-    ]
+def _pedir_criterio():
+    """Pregunta por qué buscar/ordenar. Devuelve 'numero', 'nombre' o None."""
+    print("1) Número   2) Nombre")
+    opcion = input("Elegí un criterio: ").strip()
+    if opcion == "1":
+        return "numero"
+    if opcion == "2":
+        return "nombre"
+    print("Opción inválida.")
+    return None
 
-    if not resultados:
-        print("No se encontraron coincidencias.")
+
+def _pedir_valor(criterio):
+    """Pide el valor a buscar y lo deja listo para comparar. None si es inválido."""
+    if criterio == "numero":
+        dato = input("Ingresá el número: ").strip()
+        if not dato.isdigit():
+            print("Eso no es un número válido.")
+            return None
+        return int(dato)
+    dato = input("Ingresá el nombre: ").strip()
+    if dato == "":
+        print("No ingresaste nada.")
+        return None
+    return dato.lower()
+
+
+def _aplicar_orden(criterio, algoritmo):
+    """Ordena el catálogo (in place) y recuerda por qué criterio quedó."""
+    global _orden_actual
+    algoritmo(catalogo, CLAVES[criterio])
+    _orden_actual = criterio
+
+
+def buscar():
+    """3. Buscar: lineal (cualquier orden) o binaria (catálogo ordenado)."""
+    print("Buscar con: 1) Búsqueda lineal   2) Búsqueda binaria")
+    metodo = input("Elegí un método: ").strip()
+    if metodo not in ("1", "2"):
+        print("Opción inválida.")
         return
 
-    print(f"\nSe encontraron {len(resultados)} resultado(s):")
-    for pokemon in resultados:
-        print(pokemon)
+    criterio = _pedir_criterio()
+    if criterio is None:
+        return
+    valor = _pedir_valor(criterio)
+    if valor is None:
+        return
+
+    if metodo == "1":
+        resultado = busqueda_lineal(catalogo, valor, CLAVES[criterio])
+    else:
+        # La binaria solo sirve si el catálogo está ordenado por ESE criterio.
+        # Si no lo está, se reordena y se avisa (nunca se busca a ciegas).
+        if _orden_actual != criterio:
+            print(f"Catálogo ordenado por {criterio} (inserción) para poder "
+                  f"usar búsqueda binaria.")
+            _aplicar_orden(criterio, ordenar_insercion)
+        resultado = busqueda_binaria(catalogo, valor, CLAVES[criterio])
+
+    if resultado is None:
+        print("No se encontró ningún Pokémon con ese dato.")
+    else:
+        print("\nEncontrado:")
+        print(resultado)
 
 
 def ordenar():
-    """4. Ordenar por al menos dos criterios (implementación propia, sin sorted())."""
-    print("Ordenar por: 1) Número  2) Nombre")
-    criterio = input("Elegí un criterio: ").strip()
+    """4. Ordenar por dos criterios (número / nombre) con dos algoritmos propios."""
+    criterio = _pedir_criterio()
+    if criterio is None:
+        return
 
-    # TODO (E4): reemplazar por un algoritmo de ordenamiento propio
-    # (selección, inserción, etc.) en vez de usar sorted().
-    if criterio == "1":
-        print("(pendiente E4: ordenar por número con algoritmo propio)")
-    elif criterio == "2":
-        print("(pendiente E4: ordenar por nombre con algoritmo propio)")
+    print("Algoritmo: 1) Selección   2) Inserción")
+    algoritmo = input("Elegí un algoritmo: ").strip()
+
+    if algoritmo == "1":
+        _aplicar_orden(criterio, ordenar_seleccion)
+        print(f"Catálogo ordenado por {criterio} (selección).")
+    elif algoritmo == "2":
+        _aplicar_orden(criterio, ordenar_insercion)
+        print(f"Catálogo ordenado por {criterio} (inserción).")
     else:
         print("Opción inválida.")
 
